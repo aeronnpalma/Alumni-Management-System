@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Graduation Years | Alumni Base</title>
+  <style>
+    :root {
+      --primary: #0b5ed7;
+      --primary-dark: #084da8;
+      --dark: #082f6b;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #dfe7f1;
+      --bg: #f4f6f9;
+      --white: #ffffff;
+      --success: #198754;
+      --info: #0dcaf0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 30px 0;
+      border-bottom: 3px solid var(--primary);
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .years-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .year-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      transition: 0.3s ease;
+      cursor: pointer;
+    }
+
+    .year-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .year-header {
+      background: linear-gradient(135deg, #0b5ed7, #063b82);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .year-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .year-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .year-content {
+      padding: 20px;
+    }
+
+    .year-stat {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .year-stat:last-child {
+      border-bottom: none;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .stat-value {
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .year-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 10px 12px;
+      border: none;
+      border-radius: 6px;
+      background: var(--primary);
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: 0.2s ease;
+    }
+
+    .btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+    }
+
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+
+    .stats-overview {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .overview-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .overview-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+
+    .overview-label {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .table-section {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .table-section h2 {
+      margin-bottom: 20px;
+      color: var(--primary);
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      background: #f8fafc;
+      padding: 12px;
+      text-align: left;
+      font-weight: 700;
+      color: var(--text);
+      border-bottom: 2px solid var(--border);
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+    }
+
+    tr:hover {
+      background: #f8fafc;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .badge-success {
+      background: #d4edda;
+      color: #0c7d4d;
+    }
+
+    .badge-info {
+      background: #d1ecf1;
+      color: #0c5460;
+    }
+
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 1.8rem;
+      }
+
+      .years-grid {
+        grid-template-columns: 1fr;
+      }
+
+      table {
+        font-size: 0.9rem;
+      }
+
+      th, td {
+        padding: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>📅 Graduation Years</h1>
+      <p>Browse alumni by graduation year and view statistics</p>
+    </div>
+
+    <div class="stats-overview">
+      <div class="overview-card">
+        <div class="overview-number">256</div>
+        <div class="overview-label">Total Alumni</div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-number">6</div>
+        <div class="overview-label">Years</div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-number">42.7</div>
+        <div class="overview-label">Avg per Year</div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-number">89%</div>
+        <div class="overview-label">Employed</div>
+      </div>
+    </div>
+
+    <div class="years-grid" id="yearsGrid">
+      <!-- Year cards will be populated here -->
+    </div>
+
+    <div class="table-section">
+      <h2>Year-by-Year Summary</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Graduation Year</th>
+            <th>Total Alumni</th>
+            <th>Employed</th>
+            <th>Self-Employed</th>
+            <th>Unemployed</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="yearTableBody">
+          <!-- Table rows will be populated here -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const yearsData = [
+      {
+        year: 2025,
+        total: 62,
+        employed: 48,
+        selfEmployed: 8,
+        unemployed: 6,
+        topCourse: 'BSIT',
+        maleCount: 35,
+        femaleCount: 27
+      },
+      {
+        year: 2024,
+        total: 57,
+        employed: 52,
+        selfEmployed: 3,
+        unemployed: 2,
+        topCourse: 'BSCS',
+        maleCount: 32,
+        femaleCount: 25
+      },
+      {
+        year: 2023,
+        total: 48,
+        employed: 47,
+        selfEmployed: 1,
+        unemployed: 0,
+        topCourse: 'BSIM',
+        maleCount: 28,
+        femaleCount: 20
+      },
+      {
+        year: 2022,
+        total: 44,
+        employed: 44,
+        selfEmployed: 0,
+        unemployed: 0,
+        topCourse: 'BSBA',
+        maleCount: 24,
+        femaleCount: 20
+      },
+      {
+        year: 2021,
+        total: 25,
+        employed: 25,
+        selfEmployed: 0,
+        unemployed: 0,
+        topCourse: 'BSIT',
+        maleCount: 14,
+        femaleCount: 11
+      },
+      {
+        year: 2020,
+        total: 20,
+        employed: 20,
+        selfEmployed: 0,
+        unemployed: 0,
+        topCourse: 'BSCS',
+        maleCount: 11,
+        femaleCount: 9
+      }
+    ];
+
+    function renderYearCards() {
+      const grid = document.getElementById('yearsGrid');
+      grid.innerHTML = '';
+
+      yearsData.forEach(data => {
+        const employmentRate = Math.round((data.employed / data.total) * 100);
+        const card = document.createElement('div');
+        card.className = 'year-card';
+        card.innerHTML = `
+          <div class="year-header">
+            <div class="year-number">${data.year}</div>
+            <div class="year-label">Graduation Class</div>
+          </div>
+          <div class="year-content">
+            <div class="year-stat">
+              <span class="stat-label">Total Alumni</span>
+              <span class="stat-value">${data.total}</span>
+            </div>
+            <div class="year-stat">
+              <span class="stat-label">Employment Rate</span>
+              <span class="stat-value">${employmentRate}%</span>
+            </div>
+            <div class="year-stat">
+              <span class="stat-label">Male/Female</span>
+              <span class="stat-value">${data.maleCount}/${data.femaleCount}</span>
+            </div>
+            <div class="year-stat">
+              <span class="stat-label">Top Course</span>
+              <span class="stat-value">${data.topCourse}</span>
+            </div>
+            <div class="year-actions">
+              <button class="btn" onclick="viewYear(${data.year})">View Details</button>
+              <button class="btn btn-secondary" onclick="exportYear(${data.year})">Export</button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('yearTableBody');
+      tbody.innerHTML = '';
+
+      yearsData.forEach(data => {
+        const employmentRate = Math.round((data.employed / data.total) * 100);
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td><strong>${data.year}</strong></td>
+          <td>${data.total}</td>
+          <td>${data.employed}</td>
+          <td>${data.selfEmployed}</td>
+          <td>${data.unemployed}</td>
+          <td><span class="badge badge-success">${employmentRate}% Employed</span></td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function viewYear(year) {
+      const yearData = yearsData.find(y => y.year === year);
+      alert(`Viewing details for Class of ${year}\n\nTotal Alumni: ${yearData.total}\nEmployed: ${yearData.employed}\n\nRedirecting to detailed view...`);
+    }
+
+    function exportYear(year) {
+      alert(`Exporting data for Class of ${year}...\n\nFile will be downloaded as CSV.`);
+    }
+
+    // Initialize
+    renderYearCards();
+    renderTable();
+  </script>
+</body>
+</html>
