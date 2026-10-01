@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alumni Base | Alumni Management System</title>
+  <style>
+    :root {
+      --primary: #0b5ed7;
+      --primary-dark: #084da8;
+      --primary-soft: #eaf2ff;
+      --dark: #082f6b;
+      --dark-2: #0d1b2a;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #dfe7f1;
+      --bg: #f4f6f9;
+      --white: #ffffff;
+      --success: #198754;
+      --danger: #dc3545;
+      --warning: #ffc107;
+      --shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    button, input, select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* LOGIN */
+    #loginPage {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #0b5ed7, #063b82);
+      padding: 24px;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(255, 255, 255, 0.97);
+      border-radius: 18px;
+      padding: 38px 32px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .logo h1 {
+      color: var(--primary);
+      font-size: 2rem;
+      letter-spacing: 0.06em;
+    }
+
+    .logo p {
+      color: var(--muted);
+      margin-top: 6px;
+      font-size: 0.92rem;
+    }
+
+    .input-group {
+      margin-bottom: 18px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 700;
+      font-size: 0.92rem;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #cfd8e3;
+      border-radius: 10px;
+      outline: none;
+      transition: 0.2s ease;
+      background: white;
+    }
+
+    .input-group input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(11, 94, 215, 0.12);
+    }
+
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 2px 0 20px;
+      font-size: 0.92rem;
+      color: #444;
+    }
+
+    .login-btn,
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      border-radius: 10px;
+      background: var(--primary);
+      color: white;
+      font-weight: 700;
+      transition: 0.2s ease;
+    }
+
+    .login-btn {
+      width: 100%;
+      font-size: 1rem;
+    }
+
+    .login-btn:hover,
+    .btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .forgot {
+      display: block;
+      text-align: center;
+      margin-top: 16px;
+      color: var(--primary);
+      font-size: 0.92rem;
+      cursor: pointer;
+    }
+
+    .demo-text {
+      text-align: center;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    /* APP */
+    #system {
+      display: block;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 250px;
+      height: 100vh;
+      background: #082f6b;
+      color: white;
+      padding: 20px 16px;
+      z-index: 1000;
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 28px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .brand h2 {
+      font-size: 1.6rem;
+    }
+
+    .brand p {
+      font-size: 0.74rem;
+      opacity: 0.8;
+      letter-spacing: 0.06em;
+      margin-top: 4px;
+    }
+
+    .menu {
+      list-style: none;
+    }
+
+    .menu button {
+      width: 100%;
+      padding: 12px 14px;
+      background: transparent;
+      color: white;
+      border-radius: 8px;
+      margin-bottom: 4px;
+      text-align: left;
+      font-size: 0.97rem;
+      transition: 0.2s ease;
+    }
+
+    .menu button:hover,
+    .menu button.active {
+      background: var(--primary);
+    }
+
+    .logout {
+      position: absolute;
+      bottom: 22px;
+      left: 16px;
+      right: 16px;
+    }
+
+    .logout button {
+      width: 100%;
+      padding: 12px;
+      background: var(--danger);
+      color: white;
+      border-radius: 8px;
+      font-weight: 700;
+    }
+
+    .content {
+      margin-left: 250px;
+      padding: 26px;
+    }
+
+    .topbar {
+      background: white;
+      padding: 18px 22px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .user-info {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .page {
+      display: none;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .page-title {
+      margin-bottom: 18px;
+    }
+
+    .page-title h1 {
+      font-size: 2rem;
+      margin-bottom: 4px;
+    }
+
+    .page-title p {
+      color: var(--muted);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+    }
+
+    .card h3 {
+      color: var(--muted);
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .card .number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .table-box,
+    .form-box,
+    .report-card,
+    .settings-box {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .table-box,
+    .form-box,
+    .settings-box {
+      padding: 22px;
+    }
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .table-header h2 {
+      font-size: 1.4rem;
+    }
+
+    .search {
+      width: 260px;
+      padding: 10px 12px;
+      border: 1px solid #cfd8e3;
+      border-radius: 8px;
+      outline: none;
+      background: white;
+    }
+
+    .search:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(11, 94, 215, 0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 12px 10px;
+      border-bottom: 1px solid #edf1f5;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #f8fafc;
+      color: var(--text);
+      font-size: 0.76rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    tbody tr:hover {
+      background: #fafcff;
+    }
+
+    .btn {
+      padding: 0 14px;
+      font-size: 0.8rem;
+    }
+
+    .btn-warning {
+      background: var(--warning);
+      color: #222;
+    }
+
+    .btn-warning:hover {
+      background: #e6a700;
+      color: #111;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+    }
+
+    .btn-success {
+      background: var(--success);
+    }
+
+    .btn-small {
+      min-height: 32px;
+      padding: 0 10px;
+      font-size: 0.76rem;
+    }
+
+    .action-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      min-height: 42px;
+      padding: 10px 12px;
+      border: 1px solid #cfd8e3;
+      border-radius: 8px;
+      background: white;
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(11, 94, 215, 0.09);
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    .report-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .report-card {
+      padding: 20px;
+    }
+
+    .report-card h3 {
+      color: var(--primary);
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+    }
+
+    .report-card ul {
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      color: var(--muted);
+    }
+
+    .settings-box {
+      max-width: 760px;
+    }
+
+    .setting {
+      padding: 14px 0;
+      border-bottom: 1px solid #edf1f5;
+    }
+
+    .setting:last-child {
+      border-bottom: none;
+    }
+
+    .setting label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .setting input,
+    .setting select {
+      width: 100%;
+      min-height: 42px;
+      padding: 10px 12px;
+      border: 1px solid #cfd8e3;
+      border-radius: 8px;
+      background: white;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: #eef4ff;
+      color: var(--primary-dark);
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .badge.success {
+      background: #eafaf3;
+      color: #0c7d4d;
+    }
+
+    .badge.warning {
+      background: #fff8df;
+      color: #936500;
+    }
+
+    .badge.danger {
+      background: #ffe7ea;
+      color: #ba1d35;
+    }
+
+    @media (max-width: 980px) {
+      .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .report-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
+
+      .content {
+        margin-left: 0;
+      }
+
+      .cards,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+      }
+
+      .table-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .search {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="loginPage">
+    <div class="login-box">
+      <div class="logo">
+        <h1>ALUMNI BASE</h1>
+        <p>Alumni Database Management System</p>
+      </div>
+
+      <form id="loginForm">
+        <div class="input-group">
+          <label for="username">Username</label>
+          <input id="username" type="text" placeholder="Enter username" required />
+        </div>
+
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input id="password" type="password" placeholder="Enter password" required />
+        </div>
+
+        <div class="remember">
+          <input type="checkbox" id="remember" />
+          <label for="remember">Remember Me</label>
+        </div>
+
+        <button type="submit" class="login-btn">LOGIN</button>
+        <span class="forgot" onclick="showAlert('Password reset link has been sent to your email.')">Forgot Password?</span>
+        <div class="demo-text">Demo access: enter any username and password</div>
+      </form>
+    </div>
+  </div>
+
+  <div id="system" class="hidden">
+    <aside class="sidebar">
+      <div class="brand">
+        <h2>ALUMNI BASE</h2>
+        <p>Management System</p>
+      </div>
+
+      <ul class="menu">
+        <li><button class="active" data-target="dashboard">🏠 Dashboard</button></li>
+        <li><button data-target="alumni">👥 Alumni Records</button></li>
+        <li><button data-target="addAlumni">➕ Add Alumni</button></li>
+        <li><button data-target="search">🔍 Search Alumni</button></li>
+        <li><button data-target="reports">📊 Reports</button></li>
+        <li><button data-target="users">👤 Users</button></li>
+        <li><button data-target="settings">⚙️ Settings</button></li>
+      </ul>
+
+      <div class="logout">
+        <button type="button" onclick="logout()">🚪 Logout</button>
+      </div>
+    </aside>
+
+    <main class="content">
+      <div class="topbar">
+        <strong>Alumni Database Management System</strong>
+        <div class="user-info">Welcome, <b id="currentUser">Administrator</b></div>
+      </div>
+
+      <section id="dashboard" class="page active">
+        <div class="page-title">
+          <h1>Dashboard</h1>
+          <p>Overview of the Alumni Base system</p>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <h3>Total Alumni</h3>
+            <div class="number">256</div>
+          </div>
+          <div class="card">
+            <h3>Male Alumni</h3>
+            <div class="number">142</div>
+          </div>
+          <div class="card">
+            <h3>Female Alumni</h3>
+            <div class="number">114</div>
+          </div>
+          <div class="card">
+            <h3>Graduation Years</h3>
+            <div class="number">6</div>
+          </div>
+          <div class="card">
+            <h3>Active Users</h3>
+            <div class="number">10</div>
+          </div>
+          <div class="card">
+            <h3>Total Records</h3>
+            <div class="number">256</div>
+          </div>
+          <div class="card">
+            <h3>Reports Generated</h3>
+            <div class="number">12</div>
+          </div>
+        </div>
+
+        <div class="table-box">
+          <div class="table-header">
+            <h2>Recently Added Alumni</h2>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Course</th>
+                <th>Graduation Year</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>001</td>
+                <td>Juan Dela Cruz</td>
+                <td>BS Information Technology</td>
+                <td>2025</td>
+              </tr>
+              <tr>
+                <td>002</td>
+                <td>Maria Santos</td>
+                <td>BS Computer Science</td>
+                <td>2025</td>
+              </tr>
+              <tr>
+                <td>003</td>
+                <td>Pedro Garcia</td>
+                <td>BS Information Management</td>
+                <td>2024</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="alumni" class="page">
+        <div class="page-title">
+          <h1>Alumni Records</h1>
+          <p>View and manage alumni information</p>
+        </div>
+
+        <div class="table-box">
+          <div class="table-header">
+            <h2>Alumni List</h2>
+            <input class="search" type="text" id="alumniSearch" placeholder="Search alumni..." />
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Course</th>
+                <th>Gender</th>
+                <th>Graduation</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="alumniTableBody">
+              <tr>
+                <td>001</td>
+                <td>Juan Dela Cruz</td>
+                <td>BSIT</td>
+                <td>Male</td>
+                <td>2025</td>
+                <td>
+                  <div class="action-group">
+                    <button class="btn btn-warning btn-small" onclick="editAlumni(this)">Edit</button>
+                    <button class="btn btn-danger btn-small" onclick="deleteAlumni(this)">Delete</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>002</td>
+                <td>Maria Santos</td>
+                <td>BSCS</td>
+                <td>Female</td>
+                <td>2025</td>
+                <td>
+                  <div class="action-group">
+                    <button class="btn btn-warning btn-small" onclick="editAlumni(this)">Edit</button>
+                    <button class="btn btn-danger btn-small" onclick="deleteAlumni(this)">Delete</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>003</td>
+                <td>Pedro Garcia</td>
+                <td>BSIM</td>
+                <td>Male</td>
+                <td>2024</td>
+                <td>
+                  <div class="action-group">
+                    <button class="btn btn-warning btn-small" onclick="editAlumni(this)">Edit</button>
+                    <button class="btn btn-danger btn-small" onclick="deleteAlumni(this)">Delete</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="addAlumni" class="page">
+        <div class="page-title">
+          <h1>Add Alumni</h1>
+          <p>Add a new alumni record</p>
+        </div>
+
+        <div class="form-box">
+          <form id="alumniForm">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>First Name</label>
+                <input type="text" id="firstName" required />
+              </div>
+
+              <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" id="lastName" required />
+              </div>
+
+              <div class="form-group">
+                <label>Course</label>
+                <select id="course" required>
+                  <option value="">Select Course</option>
+                  <option>BS Computer Science</option>
+                  <option>BS Information Technology</option>
+                  <option>BS Information Management</option>
+                  <option>BS Business Administration</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Gender</label>
+                <select id="gender" required>
+                  <option value="">Select Gender</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Graduation Year</label>
+                <input type="number" id="graduation" min="1900" max="2100" required />
+              </div>
+
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email" required />
+              </div>
+
+              <div class="form-group">
+                <label>Phone Number</label>
+                <input type="text" id="phone" />
+              </div>
+
+              <div class="form-group">
+                <label>Employment Status</label>
+                <select id="employment">
+                  <option>Employed</option>
+                  <option>Self-Employed</option>
+                  <option>Unemployed</option>
+                  <option>Student</option>
+                </select>
+              </div>
+
+              <div class="form-group full">
+                <button type="submit" class="btn btn-success">+ Add Alumni</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section id="search" class="page">
+        <div class="page-title">
+          <h1>Search Alumni</h1>
+          <p>Find alumni records quickly</p>
+        </div>
+
+        <div class="table-box">
+          <input class="search" style="width: 100%; margin-bottom: 16px;" type="text" id="bigSearch" placeholder="Search by name, course, gender or graduation year..." />
+
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Course</th>
+                <th>Gender</th>
+                <th>Graduation</th>
+              </tr>
+            </thead>
+            <tbody id="searchResultsBody">
+              <tr>
+                <td>001</td>
+                <td>Juan Dela Cruz</td>
+                <td>BSIT</td>
+                <td>Male</td>
+                <td>2025</td>
+              </tr>
+              <tr>
+                <td>002</td>
+                <td>Maria Santos</td>
+                <td>BSCS</td>
+                <td>Female</td>
+                <td>2025</td>
+              </tr>
+              <tr>
+                <td>003</td>
+                <td>Pedro Garcia</td>
+                <td>BSIM</td>
+                <td>Male</td>
+                <td>2024</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="reports" class="page">
+        <div class="page-title">
+          <h1>Reports</h1>
+          <p>Analytics and summary reports</p>
+        </div>
+
+        <div class="report-grid">
+          <div class="report-card">
+            <h3>Employment Status</h3>
+            <ul>
+              <li>Employed: 168</li>
+              <li>Self-Employed: 43</li>
+              <li>Unemployed: 27</li>
+              <li>Students: 18</li>
+            </ul>
+          </div>
+
+          <div class="report-card">
+            <h3>Annual Graduates</h3>
+            <ul>
+              <li>2025: 62</li>
+              <li>2024: 57</li>
+              <li>2023: 48</li>
+              <li>2022: 44</li>
+            </ul>
+          </div>
+
+          <div class="report-card">
+            <h3>Top Courses</h3>
+            <ul>
+              <li>BS Information Technology: 84</li>
+              <li>BS Computer Science: 71</li>
+              <li>BS Information Management: 52</li>
+              <li>BS Business Administration: 49</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="users" class="page">
+        <div class="page-title">
+          <h1>Users</h1>
+          <p>System users and access roles</p>
+        </div>
+
+        <div class="table-box">
+          <table>
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Administrator</td>
+                <td>admin@alumni.org</td>
+                <td><span class="badge">Super Admin</span></td>
+                <td><span class="badge success">Active</span></td>
+              </tr>
+              <tr>
+                <td>Registrar</td>
+                <td>registrar@alumni.org</td>
+                <td><span class="badge">Editor</span></td>
+                <td><span class="badge success">Active</span></td>
+              </tr>
+              <tr>
+                <td>HR Staff</td>
+                <td>hr@alumni.org</td>
+                <td><span class="badge">Viewer</span></td>
+                <td><span class="badge warning">Pending</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="settings" class="page">
+        <div class="page-title">
+          <h1>Settings</h1>
+          <p>Configure system preferences</p>
+        </div>
+
+        <div class="settings-box">
+          <div class="setting">
+            <label>School Name</label>
+            <input type="text" value="Alumni Base University" />
+          </div>
+
+          <div class="setting">
+            <label>Default Record Visibility</label>
+            <select>
+              <option>Public</option>
+              <option>Private</option>
+              <option>Restricted</option>
+            </select>
+          </div>
+
+          <div class="setting">
+            <label>Notification Email</label>
+            <input type="email" value="notify@alumni.org" />
+          </div>
+
+          <div class="setting">
+            <label>Auto Archive Records</label>
+            <select>
+              <option>After 5 years</option>
+              <option>After 3 years</option>
+              <option>Never</option>
+            </select>
+          </div>
+
+          <div class="setting">
+            <button type="button" class="btn btn-success" onclick="showAlert('Settings saved successfully.')">Save Settings</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const loginPage = document.getElementById('loginPage');
+    const system = document.getElementById('system');
+    const loginForm = document.getElementById('loginForm');
+    const currentUser = document.getElementById('currentUser');
+
+    loginForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (username && password) {
+        currentUser.textContent = username || 'Administrator';
+        loginPage.classList.add('hidden');
+        system.classList.remove('hidden');
+      }
+    });
+
+    function logout() {
+      system.classList.add('hidden');
+      loginPage.classList.remove('hidden');
+      loginForm.reset();
+    }
+
+    document.querySelectorAll('.menu button').forEach((btn) => {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.menu button').forEach((menuBtn) => menuBtn.classList.remove('active'));
+        this.classList.add('active');
+
+        const target = this.dataset.target;
+        document.querySelectorAll('.page').forEach((page) => page.classList.remove('active'));
+        document.getElementById(target).classList.add('active');
+      });
+    });
+
+    function showAlert(message) {
+      alert(message);
+    }
+
+    function searchTable(inputId, tbodyId) {
+      const input = document.getElementById(inputId);
+      const tbody = document.getElementById(tbodyId);
+
+      input.addEventListener('input', function () {
+        const term = this.value.toLowerCase();
+        const rows = tbody.querySelectorAll('tr');
+
+        rows.forEach((row) => {
+          const text = row.textContent.toLowerCase();
+          row.style.display = text.includes(term) ? '' : 'none';
+        });
+      });
+    }
+
+    function deleteAlumni(button) {
+      const row = button.closest('tr');
+      if (row) {
+        if (confirm('Are you sure you want to delete this alumni record?')) {
+          row.remove();
+          showAlert('Record deleted successfully.');
+        }
+      }
+    }
+
+    function editAlumni(button) {
+      const row = button.closest('tr');
+      const cells = row.querySelectorAll('td');
+      const name = cells[1].textContent.trim();
+      showAlert('Editing alumni record for: ' + name);
+    }
+
+    document.getElementById('alumniForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const course = document.getElementById('course').value;
+      const gender = document.getElementById('gender').value;
+      const graduation = document.getElementById('graduation').value;
+
+      if (!firstName || !lastName || !course || !gender || !graduation) {
+        showAlert('Please complete all required fields.');
+        return;
+      }
+
+      const table = document.getElementById('alumniTableBody');
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${String(table.rows.length + 1).padStart(3, '0')}</td>
+        <td>${firstName} ${lastName}</td>
+        <td>${course}</td>
+        <td>${gender}</td>
+        <td>${graduation}</td>
+        <td>
+          <div class="action-group">
+            <button class="btn btn-warning btn-small" onclick="editAlumni(this)">Edit</button>
+            <button class="btn btn-danger btn-small" onclick="deleteAlumni(this)">Delete</button>
+          </div>
+        </td>
+      `;
+
+      table.appendChild(row);
+      this.reset();
+      showAlert('Alumni record added successfully.');
+    });
+
+    searchTable('alumniSearch', 'alumniTableBody');
+    searchTable('bigSearch', 'searchResultsBody');
+  </script>
+</body>
+</html>
