@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Announcements | Alumni Base</title>
+  <style>
+    :root {
+      --primary: #0b5ed7;
+      --primary-dark: #084da8;
+      --dark: #082f6b;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #dfe7f1;
+      --bg: #f4f6f9;
+      --white: #ffffff;
+      --danger: #dc3545;
+      --warning: #ffc107;
+      --info: #0dcaf0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 20px 0;
+      border-bottom: 2px solid var(--primary);
+    }
+
+    .header h1 {
+      color: var(--primary);
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .announcement-list {
+      display: grid;
+      gap: 18px;
+    }
+
+    .announcement-card {
+      background: var(--white);
+      border-left: 4px solid var(--primary);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      transition: 0.3s ease;
+    }
+
+    .announcement-card:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .announcement-card.urgent {
+      border-left-color: var(--danger);
+      background: #fff5f5;
+    }
+
+    .announcement-card.info {
+      border-left-color: var(--info);
+      background: #f0f9ff;
+    }
+
+    .announcement-card.event {
+      border-left-color: #198754;
+      background: #f0fdf4;
+    }
+
+    .announcement-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+      gap: 12px;
+    }
+
+    .announcement-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .badge.urgent {
+      background: var(--danger);
+      color: white;
+    }
+
+    .badge.info {
+      background: var(--info);
+      color: white;
+    }
+
+    .badge.event {
+      background: #198754;
+      color: white;
+    }
+
+    .announcement-meta {
+      display: flex;
+      gap: 16px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .announcement-content {
+      color: var(--text);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .announcement-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 12px;
+      border-top: 1px solid #eee;
+    }
+
+    .author {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      background: var(--primary);
+      color: white;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: 0.2s ease;
+    }
+
+    .btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: 0.2s ease;
+    }
+
+    .filter-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .filter-btn:hover {
+      border-color: var(--primary);
+    }
+
+    @media (max-width: 600px) {
+      .header h1 {
+        font-size: 1.8rem;
+      }
+
+      .announcement-header {
+        flex-direction: column;
+      }
+
+      .filter-bar {
+        flex-direction: column;
+      }
+
+      .filter-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>📢 Announcements</h1>
+      <p>Latest updates and news from Alumni Base</p>
+    </div>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterAnnouncements('all')">All</button>
+      <button class="filter-btn" onclick="filterAnnouncements('urgent')">🚨 Urgent</button>
+      <button class="filter-btn" onclick="filterAnnouncements('event')">🎉 Events</button>
+      <button class="filter-btn" onclick="filterAnnouncements('info')">ℹ️ Information</button>
+    </div>
+
+    <div class="announcement-list" id="announcementList">
+      <!-- Announcements will be populated here -->
+    </div>
+  </div>
+
+  <script>
+    const announcements = [
+      {
+        id: 1,
+        type: 'event',
+        title: 'Annual Alumni Homecoming 2025',
+        content: 'Join us for the Annual Alumni Homecoming on October 15, 2025. Network with fellow alumni, attend workshops, and celebrate our shared memories.',
+        date: 'October 15, 2025',
+        author: 'Events Team',
+        icon: '🎉'
+      },
+      {
+        id: 2,
+        type: 'info',
+        title: 'Database Migration Scheduled',
+        content: 'We are upgrading our system to improve performance. Scheduled maintenance on Saturday, October 5 from 10 PM to 2 AM. The system will be unavailable during this time.',
+        date: 'September 28, 2024',
+        author: 'IT Department',
+        icon: 'ℹ️'
+      },
+      {
+        id: 3,
+        type: 'urgent',
+        title: 'Update Your Contact Information',
+        content: 'IMPORTANT: Please update your contact information in your profile to ensure you receive important announcements and invitations. Outdated records may miss critical communications.',
+        date: 'September 25, 2024',
+        author: 'Alumni Services',
+        icon: '🚨'
+      },
+      {
+        id: 4,
+        type: 'event',
+        title: 'Career Development Workshop',
+        content: 'Attend our Career Development Workshop featuring industry leaders discussing trends, opportunities, and career advancement strategies. Register now!',
+        date: 'October 8, 2024',
+        author: 'Career Services',
+        icon: '🎉'
+      },
+      {
+        id: 5,
+        type: 'info',
+        title: 'New Scholarship Program Launched',
+        content: 'We are proud to announce a new scholarship program for deserving students. Applications are now open and will close on December 31, 2024. Visit our website for more details.',
+        date: 'September 20, 2024',
+        author: 'Admissions Office',
+        icon: 'ℹ️'
+      },
+      {
+        id: 6,
+        type: 'event',
+        title: 'Alumni Networking Breakfast',
+        content: 'Connect with alumni from your graduation year over breakfast. Discuss career experiences and build lasting professional relationships.',
+        date: 'October 22, 2024',
+        author: 'Network Committee',
+        icon: '🎉'
+      },
+      {
+        id: 7,
+        type: 'info',
+        title: 'New Alumni Directory Feature',
+        content: 'Our updated directory now includes advanced search capabilities, LinkedIn integration, and professional networking tools. Explore your network today!',
+        date: 'September 18, 2024',
+        author: 'Technology Team',
+        icon: 'ℹ️'
+      },
+      {
+        id: 8,
+        type: 'urgent',
+        title: 'Deadline: Annual Fund Contribution',
+        content: 'The deadline for 2024 Annual Fund contributions is September 30. Your support helps us maintain scholarships and campus programs. Contribute today!',
+        date: 'September 15, 2024',
+        author: 'Development Office',
+        icon: '🚨'
+      }
+    ];
+
+    function renderAnnouncements(filter = 'all') {
+      const list = document.getElementById('announcementList');
+      list.innerHTML = '';
+
+      const filtered = filter === 'all' 
+        ? announcements 
+        : announcements.filter(a => a.type === filter);
+
+      filtered.forEach(announcement => {
+        const card = document.createElement('div');
+        card.className = `announcement-card ${announcement.type}`;
+        card.innerHTML = `
+          <div class="announcement-header">
+            <div>
+              <h3 class="announcement-title">${announcement.icon} ${announcement.title}</h3>
+              <div class="announcement-meta">
+                <span>📅 ${announcement.date}</span>
+              </div>
+            </div>
+            <span class="badge ${announcement.type}">${announcement.type}</span>
+          </div>
+          <div class="announcement-content">
+            ${announcement.content}
+          </div>
+          <div class="announcement-footer">
+            <span class="author">by ${announcement.author}</span>
+            <button class="btn" onclick="alert('More details coming soon!')">Read More</button>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    function filterAnnouncements(type) {
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      renderAnnouncements(type);
+    }
+
+    // Initial render
+    renderAnnouncements();
+  </script>
+</body>
+</html>
