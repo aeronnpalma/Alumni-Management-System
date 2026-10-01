@@ -1,1384 +1,1574 @@
-Smart Traffic Management System
-Front end Source code (HTML, CSS, JAVASCRIPT)
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Traffic Management System</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-soft: #eff6ff;
+      --dark: #0f172a;
+      --dark-2: #111827;
+      --dark-3: #1e293b;
+      --text: #1e293b;
+      --muted: #64748b;
+      --light: #f8fafc;
+      --border: #e2e8f0;
+      --white: #ffffff;
+      --green: #10b981;
+      --green-soft: #dcfce7;
+      --yellow: #f59e0b;
+      --yellow-soft: #fef3c7;
+      --red: #ef4444;
+      --red-soft: #fee2e2;
+      --shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 18px 50px rgba(15, 23, 42, 0.14);
+      --sidebar-width: 260px;
+      --header-height: 74px;
+      --radius: 16px;
+    }
 
-<title>Smart Traffic Management System</title>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-<style>
+    html {
+      scroll-behavior: smooth;
+    }
 
-/* =========================================================
-   ROOT / GENERAL
-========================================================= */
+    body {
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      background: #f1f5f9;
+      color: var(--text);
+      min-height: 100vh;
+    }
 
-:root{
-    --primary:#2563eb;
-    --primary-dark:#1d4ed8;
-    --primary-light:#eff6ff;
+    button, input, select {
+      font: inherit;
+    }
 
-    --dark:#0f172a;
-    --dark-2:#111827;
-    --dark-3:#1e293b;
+    button {
+      cursor: pointer;
+      border: none;
+    }
 
-    --text:#1e293b;
-    --muted:#64748b;
-    --light:#f8fafc;
-    --border:#e2e8f0;
-    --white:#ffffff;
+    .hidden {
+      display: none !important;
+    }
 
-    --green:#10b981;
-    --green-bg:#dcfce7;
-
-    --yellow:#f59e0b;
-    --yellow-bg:#fef3c7;
-
-    --red:#ef4444;
-    --red-bg:#fee2e2;
-
-    --shadow:0 8px 30px rgba(15,23,42,.07);
-    --shadow-lg:0 18px 50px rgba(15,23,42,.14);
-
-    --sidebar-width:255px;
-    --header-height:74px;
-
-    --radius:14px;
-}
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-html{
-    scroll-behavior:smooth;
-}
-
-body{
-    font-family:Inter,Arial,Helvetica,sans-serif;
-    background:#f1f5f9;
-    color:var(--text);
-    min-height:100vh;
-}
-
-button,
-input,
-select{
-    font:inherit;
-}
-
-button{
-    cursor:pointer;
-}
-
-.hidden{
-    display:none !important;
-}
-
-
-/* =========================================================
-   LOGIN
-========================================================= */
-
-#loginPage{
-    position:fixed;
-    inset:0;
-    z-index:9999;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    background:
-        radial-gradient(circle at 20% 20%,rgba(37,99,235,.18),transparent 30%),
-        radial-gradient(circle at 80% 80%,rgba(14,165,233,.15),transparent 30%),
+    /* Login */
+    #loginPage {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(37, 99, 235, 0.18), transparent 28%),
+        radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.12), transparent 32%),
         #f1f5f9;
-
-    padding:20px;
-}
-
-.login-container{
-    width:420px;
-    max-width:100%;
-
-    background:rgba(255,255,255,.96);
-    border:1px solid rgba(255,255,255,.8);
-
-    padding:40px;
-
-    border-radius:22px;
-
-    box-shadow:var(--shadow-lg);
-}
-
-.login-logo{
-    text-align:center;
-    margin-bottom:32px;
-}
-
-.login-icon{
-    width:76px;
-    height:76px;
-
-    margin:0 auto 16px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    border-radius:22px;
-
-    background:linear-gradient(135deg,#2563eb,#1d4ed8);
-    color:white;
-
-    font-size:38px;
-
-    box-shadow:0 12px 25px rgba(37,99,235,.28);
-}
-
-.login-logo h1{
-    font-size:25px;
-    color:#0f172a;
-}
-
-.login-logo p{
-    color:var(--muted);
-    font-size:14px;
-    margin-top:6px;
-}
-
-.login-group{
-    margin-bottom:19px;
-}
-
-.login-group label{
-    display:block;
-    font-size:13px;
-    font-weight:700;
-    margin-bottom:8px;
-}
-
-.input-wrapper{
-    position:relative;
-}
-
-.login-group input{
-    width:100%;
-    height:48px;
-
-    padding:0 45px 0 14px;
-
-    border:1px solid var(--border);
-    border-radius:10px;
-
-    outline:none;
-
-    background:#fff;
-
-    transition:.2s;
-}
-
-.login-group input:focus{
-    border-color:var(--primary);
-    box-shadow:0 0 0 4px rgba(37,99,235,.1);
-}
-
-.password-toggle{
-    position:absolute;
-    right:12px;
-    top:50%;
-    transform:translateY(-50%);
-
-    background:none;
-    border:none;
-
-    color:var(--muted);
-}
-
-.login-btn{
-    width:100%;
-    height:49px;
-
-    border:0;
-    border-radius:10px;
-
-    background:linear-gradient(135deg,#2563eb,#1d4ed8);
-
-    color:#fff;
-    font-weight:700;
-
-    transition:.2s;
-}
-
-.login-btn:hover{
-    transform:translateY(-1px);
-    box-shadow:0 8px 20px rgba(37,99,235,.25);
-}
-
-.login-demo{
-    text-align:center;
-    color:var(--muted);
-    font-size:12px;
-    margin-top:18px;
-}
-
-
-/* =========================================================
-   SIDEBAR
-========================================================= */
-
-.sidebar{
-    position:fixed;
-    left:0;
-    top:0;
-
-    width:var(--sidebar-width);
-    height:100vh;
-
-    background:
-        linear-gradient(180deg,#0f172a 0%,#111827 100%);
-
-    color:#fff;
-
-    padding:22px 14px;
-
-    z-index:1000;
-
-    overflow-y:auto;
-}
-
-.logo{
-    display:flex;
-    align-items:center;
-    gap:12px;
-
-    padding:5px 10px 26px;
-
-    border-bottom:1px solid rgba(255,255,255,.08);
-    margin-bottom:22px;
-}
-
-.logo-icon{
-    width:46px;
-    height:46px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    border-radius:12px;
-
-    background:rgba(37,99,235,.18);
-
-    font-size:26px;
-}
-
-.logo h2{
-    font-size:17px;
-    line-height:1.2;
-}
-
-.logo p{
-    color:#94a3b8;
-    font-size:11px;
-    margin-top:4px;
-}
-
-.menu-title{
-    color:#64748b;
-    font-size:10px;
-    font-weight:800;
-
-    letter-spacing:1px;
-    text-transform:uppercase;
-
-    padding:12px 12px 8px;
-}
-
-.menu button{
-    width:100%;
-
-    display:flex;
-    align-items:center;
-    gap:12px;
-
-    padding:12px 13px;
-    margin-bottom:4px;
-
-    border:0;
-    border-radius:10px;
-
-    background:transparent;
-
-    color:#cbd5e1;
-
-    text-align:left;
-    font-size:13px;
-
-    transition:.2s;
-}
-
-.menu button:hover{
-    background:rgba(255,255,255,.07);
-    color:#fff;
-}
-
-.menu button.active{
-    background:linear-gradient(
-        135deg,
-        rgba(37,99,235,1),
-        rgba(29,78,216,.88)
-    );
-
-    color:#fff;
-
-    box-shadow:0 8px 20px rgba(37,99,235,.2);
-}
-
-.menu-icon{
-    width:20px;
-    text-align:center;
-    font-size:16px;
-}
-
-.sidebar-footer{
-    margin-top:35px;
-    padding:15px 12px;
-
-    border-top:1px solid rgba(255,255,255,.08);
-
-    color:#64748b;
-    font-size:10px;
-    line-height:1.5;
-}
-
-
-/* =========================================================
-   MAIN
-========================================================= */
-
-.main{
-    margin-left:var(--sidebar-width);
-    min-height:100vh;
-}
-
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-.header{
-    position:sticky;
-    top:0;
-    z-index:100;
-
-    height:var(--header-height);
-
-    background:rgba(255,255,255,.94);
-    backdrop-filter:blur(12px);
-
-    border-bottom:1px solid var(--border);
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    padding:0 30px;
-}
-
-.header-left{
-    display:flex;
-    align-items:center;
-    gap:14px;
-}
-
-.mobile-button{
-    display:none;
-
-    width:40px;
-    height:40px;
-
-    border:0;
-    border-radius:9px;
-
-    background:var(--dark);
-    color:white;
-}
-
-.header-title h1{
-    font-size:20px;
-    font-weight:800;
-}
-
-.header-title p{
-    color:var(--muted);
-    font-size:12px;
-    margin-top:3px;
-}
-
-.header-right{
-    display:flex;
-    align-items:center;
-    gap:18px;
-}
-
-.clock{
-    color:var(--muted);
-    font-size:12px;
-}
-
-.profile{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.profile-icon{
-    width:39px;
-    height:39px;
-
-    border-radius:50%;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    background:linear-gradient(135deg,#2563eb,#1d4ed8);
-
-    color:#fff;
-    font-weight:800;
-}
-
-.profile-text strong{
-    font-size:13px;
-}
-
-.profile-text p{
-    color:var(--muted);
-    font-size:10px;
-    margin-top:2px;
-}
-
-
-/* =========================================================
-   CONTENT
-========================================================= */
-
-.content{
-    padding:28px;
-}
-
-.page{
-    display:none;
-    animation:pageIn .25s ease;
-}
-
-.page.active{
-    display:block;
-}
-
-@keyframes pageIn{
-    from{
-        opacity:0;
-        transform:translateY(5px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-
-/* =========================================================
-   DASHBOARD CARDS
-========================================================= */
-
-.cards{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:17px;
-
-    margin-bottom:22px;
-}
-
-.card{
-    position:relative;
-
-    background:#fff;
-
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-
-    padding:20px;
-
-    box-shadow:0 4px 15px rgba(15,23,42,.035);
-
-    overflow:hidden;
-
-    transition:.2s;
-}
-
-.card:hover{
-    transform:translateY(-2px);
-    box-shadow:var(--shadow);
-}
-
-.card::after{
-    content:"";
-
-    position:absolute;
-    right:-25px;
-    top:-25px;
-
-    width:90px;
-    height:90px;
-
-    border-radius:50%;
-
-    background:rgba(37,99,235,.05);
-}
-
-.card-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.card-title{
-    color:var(--muted);
-
-    font-size:11px;
-    font-weight:700;
-
-    text-transform:uppercase;
-    letter-spacing:.4px;
-}
-
-.card-icon{
-    width:38px;
-    height:38px;
-
-    border-radius:10px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    font-size:18px;
-}
-
-.icon-blue{
-    background:#eff6ff;
-    color:#2563eb;
-}
-
-.icon-green{
-    background:#ecfdf5;
-    color:#059669;
-}
-
-.icon-orange{
-    background:#fff7ed;
-    color:#ea580c;
-}
-
-.icon-red{
-    background:#fef2f2;
-    color:#dc2626;
-}
-
-.card-number{
-    font-size:29px;
-    font-weight:800;
-
-    margin-top:14px;
-}
-
-.card-meta{
-    display:flex;
-    align-items:center;
-    gap:5px;
-
-    color:var(--muted);
-
-    font-size:11px;
-    margin-top:6px;
-}
-
-.card-meta .up{
-    color:var(--green);
-    font-weight:700;
-}
-
-
-/* =========================================================
-   BOX
-========================================================= */
-
-.box{
-    background:#fff;
-
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-
-    padding:22px;
-
-    margin-bottom:20px;
-
-    box-shadow:0 4px 15px rgba(15,23,42,.035);
-}
-
-.box-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    gap:15px;
-
-    margin-bottom:20px;
-}
-
-.box-header h2{
-    font-size:17px;
-}
-
-.box-header p{
-    color:var(--muted);
-    font-size:12px;
-    margin-top:4px;
-}
-
-.box-actions{
-    display:flex;
-    gap:8px;
-    align-items:center;
-}
-
-
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-.btn{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    gap:6px;
-
-    min-height:38px;
-
-    padding:0 14px;
-
-    border:0;
-    border-radius:9px;
-
-    background:var(--primary);
-    color:#fff;
-
-    font-size:12px;
-    font-weight:700;
-
-    transition:.2s;
-}
-
-.btn:hover{
-    background:var(--primary-dark);
-    transform:translateY(-1px);
-}
-
-.btn-secondary{
-    background:#f1f5f9;
-    color:#334155;
-}
-
-.btn-secondary:hover{
-    background:#e2e8f0;
-}
-
-.btn-green{
-    background:var(--green);
-}
-
-.btn-green:hover{
-    background:#059669;
-}
-
-.btn-danger{
-    background:var(--red);
-}
-
-.btn-danger:hover{
-    background:#dc2626;
-}
-
-.btn-small{
-    min-height:31px;
-    padding:0 10px;
-    font-size:11px;
-}
-
-
-/* =========================================================
-   TRAFFIC MONITORING
-========================================================= */
-
-.traffic-grid{
-    display:grid;
-    grid-template-columns:1.5fr 1fr;
-    gap:18px;
-}
-
-.road-item{
-    border:1px solid var(--border);
-
-    padding:17px;
-
-    border-radius:11px;
-
-    margin-bottom:10px;
-
-    transition:.2s;
-}
-
-.road-item:hover{
-    border-color:#bfdbfe;
-    background:#fafcff;
-}
-
-.road-info{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    gap:10px;
-
-    margin-bottom:10px;
-}
-
-.road-name{
-    font-size:13px;
-    font-weight:800;
-}
-
-.road-location{
-    color:var(--muted);
-    font-size:11px;
-    margin-top:4px;
-}
-
-.progress-row{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.progress{
-    height:8px;
-    flex:1;
-
-    background:#e2e8f0;
-
-    border-radius:20px;
-
-    overflow:hidden;
-}
-
-.progress-bar{
-    height:100%;
-
-    border-radius:20px;
-
-    transition:width .5s ease;
-}
-
-.progress-green{
-    background:linear-gradient(90deg,#10b981,#34d399);
-}
-
-.progress-orange{
-    background:linear-gradient(90deg,#f59e0b,#fbbf24);
-}
-
-.progress-red{
-    background:linear-gradient(90deg,#ef4444,#f87171);
-}
-
-.progress-value{
-    width:35px;
-
-    text-align:right;
-
-    font-size:11px;
-    font-weight:800;
-}
-
-
-/* =========================================================
-   QUICK STATUS
-========================================================= */
-
-.status-summary{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-}
-
-.summary-box{
-    padding:15px;
-
-    border-radius:11px;
-
-    text-align:center;
-
-    border:1px solid var(--border);
-}
-
-.summary-box strong{
-    display:block;
-    font-size:21px;
-}
-
-.summary-box span{
-    display:block;
-    color:var(--muted);
-    font-size:10px;
-    margin-top:4px;
-}
-
-.summary-green{
-    background:#f0fdf4;
-}
-
-.summary-orange{
-    background:#fffbeb;
-}
-
-.summary-red{
-    background:#fef2f2;
-}
-
-
-/* =========================================================
-   STATUS BADGES
-========================================================= */
-
-.status{
-    display:inline-flex;
-    align-items:center;
-    gap:5px;
-
-    padding:5px 9px;
-
-    border-radius:30px;
-
-    font-size:10px;
-    font-weight:800;
-}
-
-.status::before{
-    content:"";
-
-    width:5px;
-    height:5px;
-
-    border-radius:50%;
-
-    background:currentColor;
-}
-
-.low{
-    background:var(--green-bg);
-    color:#15803d;
-}
-
-.moderate{
-    background:var(--yellow-bg);
-    color:#a16207;
-}
-
-.heavy,
-.active-status{
-    background:var(--red-bg);
-    color:#b91c1c;
-}
-
-.resolved{
-    background:var(--green-bg);
-    color:#15803d;
-}
-
-
-/* =========================================================
-   SYSTEM FLOW
-========================================================= */
-
-.flow{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    gap:10px;
-
-    flex-wrap:wrap;
-}
-
-.flow-item{
-    min-width:125px;
-
-    padding:15px;
-
-    border-radius:11px;
-
-    background:var(--primary-light);
-    border:1px solid #bfdbfe;
-
-    color:#1d4ed8;
-
-    text-align:center;
-
-    font-size:12px;
-    font-weight:800;
-}
-
-.arrow{
-    color:#94a3b8;
-    font-size:18px;
-}
-
-
-/* =========================================================
-   TABLE
-========================================================= */
-
-.table-toolbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    gap:10px;
-
-    margin-bottom:14px;
-}
-
-.search-box{
-    position:relative;
-
-    width:280px;
-    max-width:100%;
-}
-
-.search-box input{
-    width:100%;
-    height:38px;
-
-    padding:0 13px 0 36px;
-
-    border:1px solid var(--border);
-    border-radius:9px;
-
-    outline:none;
-
-    font-size:12px;
-}
-
-.search-box input:focus{
-    border-color:var(--primary);
-    box-shadow:0 0 0 3px rgba(37,99,235,.08);
-}
-
-.search-icon{
-    position:absolute;
-    left:12px;
-    top:50%;
-
-    transform:translateY(-50%);
-
-    color:#94a3b8;
-}
-
-.table-container{
-    overflow-x:auto;
-
-    border:1px solid var(--border);
-    border-radius:10px;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-
-    min-width:650px;
-}
-
-th{
-    background:#f8fafc;
-
-    padding:13px 14px;
-
-    text-align:left;
-
-    color:#64748b;
-
-    font-size:10px;
-    font-weight:800;
-
-    text-transform:uppercase;
-    letter-spacing:.4px;
-
-    white-space:nowrap;
-}
-
-td{
-    padding:14px;
-
-    border-top:1px solid var(--border);
-
-    font-size:12px;
-
-    color:#334155;
-}
-
-tbody tr{
-    transition:.15s;
-}
-
-tbody tr:hover{
-    background:#f8fafc;
-}
-
-.empty-row{
-    text-align:center;
-    color:#94a3b8;
-    padding:30px;
-}
-
-
-/* =========================================================
-   SIGNALS
-========================================================= */
-
-.signal-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:17px;
-}
-
-.signal-card{
-    border:1px solid var(--border);
-
-    border-radius:14px;
-
-    padding:22px;
-
-    text-align:center;
-
-    background:#fff;
-
-    transition:.2s;
-}
-
-.signal-card:hover{
-    transform:translateY(-2px);
-    box-shadow:var(--shadow);
-}
-
-.signal-card h3{
-    font-size:14px;
-}
-
-.signal-card p{
-    color:var(--muted);
-    font-size:11px;
-    margin-top:5px;
-}
-
-.traffic-light{
-    width:76px;
-
-    background:#0f172a;
-
-    padding:9px;
-
-    border-radius:15px;
-
-    margin:20px auto;
-
-    box-shadow:
-        inset 0 0 0 1px rgba(255,255,255,.08),
-        0 8px 20px rgba(15,23,42,.18);
-}
-
-.light{
-    width:43px;
-    height:43px;
-
-    background:#334155;
-
-    border-radius:50%;
-
-    margin:7px auto;
-
-    box-shadow:inset 0 2px 5px rgba(0,0,0,.3);
-
-    transition:.2s;
-}
-
-.red-on{
-    background:#ef4444;
-    box-shadow:0 0 18px rgba(239,68,68,.6);
-}
-
-.yellow-on{
-    background:#facc15;
-    box-shadow:0 0 18px rgba(250,204,21,.6);
-}
-
-.green-on{
-    background:#22c55e;
-    box-shadow:0 0 18px rgba(34,197,94,.6);
-}
-
-.signal-state{
-    margin-bottom:15px;
-}
-
-.signal-state strong{
-    font-size:13px;
-}
-
-
-/* =========================================================
-   MODAL
-========================================================= */
-
-.modal{
-    position:fixed;
-    inset:0;
-
-    z-index:5000;
-
-    display:none;
-
-    align-items:center;
-    justify-content:center;
-
-    padding:20px;
-
-    background:rgba(15,23,42,.55);
-
-    backdrop-filter:blur(5px);
-}
-
-.modal.show{
-    display:flex;
-}
-
-.modal-card{
-    width:470px;
-    max-width:100%;
-
-    background:#fff;
-
-    border-radius:16px;
-
-    box-shadow:var(--shadow-lg);
-
-    animation:modalIn .2s ease;
-}
-
-@keyframes modalIn{
-    from{
-        opacity:0;
-        transform:scale(.96) translateY(8px);
-    }
-    to{
-        opacity:1;
-        transform:scale(1) translateY(0);
-    }
-}
-
-.modal-header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    padding:20px 22px;
-
-    border-bottom:1px solid var(--border);
-}
-
-.modal-header h3{
-    font-size:16px;
-}
-
-.modal-close{
-    width:32px;
-    height:32px;
-
-    border:0;
-    border-radius:8px;
-
-    background:#f1f5f9;
-
-    color:#475569;
-
-    font-size:18px;
-}
-
-.modal-body{
-    padding:22px;
-}
-
-.form-group{
-    margin-bottom:15px;
-}
-
-.form-group label{
-    display:block;
-
-    font-size:11px;
-    font-weight:800;
-
-    color:#475569;
-
-    margin-bottom:7px;
-}
-
-.form-group input,
-.form-group select{
-    width:100%;
-    height:42px;
-
-    padding:0 12px;
-
-    border:1px solid var(--border);
-    border-radius:9px;
-
-    outline:none;
-
-    background:white;
-
-    font-size:12px;
-}
-
-.form-group input:focus,
-.form-group select:focus{
-    border-color:var(--primary);
-
-    box-shadow:0 0 0 3px rgba(37,99,235,.08);
-}
-
-.modal-footer{
-    display:flex;
-    justify-content:flex-end;
-    gap:8px;
-
-    padding:16px 22px;
-
-    border-top:1px solid var(--border);
-}
-
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-#toastContainer{
-    position:fixed;
-
-    right:20px;
-    bottom:20px;
-
-    z-index:9000;
-
-    display:flex;
-    flex-direction:column;
-
-    gap:10px;
-}
-
-.toast{
-    min-width:270px;
-    max-width:360px;
-
-    display:flex;
-    align-items:flex-start;
-    gap:10px;
-
-    padding:14px 16px;
-
-    background:#fff;
-
-    border:1px solid var(--border);
-
-    border-left:4px solid var(--primary);
-
-    border-radius:10px;
-
-    box-shadow:var(--shadow-lg);
-
-    animation:toastIn .25s ease;
-}
-
-.toast.success{
-    border-left-color:var(--green);
-}
-
-.toast.error{
-    border-left-color:var(--red);
-}
-
-.toast-title{
-    font-weight:800;
-    font-size:12px;
-}
-
-.toast-message{
-    color:var(--muted);
-    font-size:11px;
-    margin-top:3px;
-}
-
-@keyframes toastIn{
-    from{
-        opacity:0;
-        transform:translateX(30px);
-    }
-    to{
-        opacity:1;
-        transform:translateX(0);
-    }
-}
-
-
-/* =========================================================
-   MOBILE OVERLAY
-========================================================= */
-
-.sidebar-overlay{
-    display:none;
-
-    position:fixed;
-    inset:0;
-
-    background:rgba(15,23,42,.45);
-
-    z-index:900;
-}
-
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media(max-width:1150px){
-
-    .cards{
-        grid-template-columns:repeat(2,1fr);
     }
 
-    .traffic-grid{
-        grid-template-columns:1fr;
+    .login-container {
+      width: 420px;
+      max-width: 100%;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 22px;
+      padding: 40px 32px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .login-logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .login-icon {
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      font-size: 38px;
+      box-shadow: 0 12px 25px rgba(37, 99, 235, 0.28);
+    }
+
+    .login-logo h1 {
+      font-size: 25px;
+      color: var(--dark);
+    }
+
+    .login-logo p {
+      margin-top: 6px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .login-group {
+      margin-bottom: 18px;
+    }
+
+    .login-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .login-group input {
+      width: 100%;
+      height: 48px;
+      padding: 0 45px 0 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+      outline: none;
+      transition: 0.2s ease;
+    }
+
+    .login-group input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .login-btn {
+      width: 100%;
+      height: 49px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      font-weight: 700;
+      transition: 0.2s ease;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+    }
+
+    .login-demo {
+      font-size: 12px;
+      text-align: center;
+      color: var(--muted);
+      margin-top: 18px;
+      line-height: 1.5;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: var(--sidebar-width);
+      height: 100vh;
+      background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
+      color: white;
+      padding: 22px 14px;
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 5px 10px 26px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 22px;
+    }
+
+    .brand-icon {
+      width: 46px;
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      background: rgba(37, 99, 235, 0.18);
+      font-size: 26px;
+    }
+
+    .brand h2 {
+      font-size: 17px;
+      line-height: 1.2;
+    }
+
+    .brand p {
+      color: #94a3b8;
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .menu-title {
+      color: #64748b;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 12px 12px 8px;
+    }
+
+    .menu button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 13px;
+      margin-bottom: 4px;
+      border-radius: 10px;
+      background: transparent;
+      color: #cbd5e1;
+      text-align: left;
+      font-size: 13px;
+      transition: 0.2s ease;
+    }
+
+    .menu button:hover {
+      background: rgba(255, 255, 255, 0.07);
+      color: white;
+    }
+
+    .menu button.active {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 1), rgba(29, 78, 216, 0.88));
+      color: white;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
+    }
+
+    .menu-icon {
+      width: 20px;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .sidebar-footer {
+      margin-top: 35px;
+      padding: 15px 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      color: #64748b;
+      font-size: 10px;
+      line-height: 1.5;
+    }
+
+    /* Main area */
+    .main {
+      margin-left: var(--sidebar-width);
+      min-height: 100vh;
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: var(--header-height);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .mobile-button {
+      display: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 9px;
+      background: var(--dark);
+      color: white;
+    }
+
+    .header-title h1 {
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .header-title p {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .clock {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .profile-icon {
+      width: 39px;
+      height: 39px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      font-weight: 800;
+    }
+
+    .profile-text strong {
+      font-size: 13px;
+    }
+
+    .profile-text p {
+      color: var(--muted);
+      font-size: 10px;
+      margin-top: 2px;
+    }
+
+    .content {
+      padding: 28px;
+    }
+
+    .page {
+      display: none;
+      animation: pageIn 0.25s ease;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes pageIn {
+      from {
+        opacity: 0;
+        transform: translateY(5px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Cards */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 17px;
+      margin-bottom: 22px;
+    }
+
+    .card {
+      position: relative;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(15, 23, 42, 0.035);
+      overflow: hidden;
+      transition: 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      right: -25px;
+      top: -25px;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: rgba(37, 99, 235, 0.05);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .card-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .icon-blue { background: #eff6ff; color: #2563eb; }
+    .icon-green { background: #ecfdf5; color: #059669; }
+    .icon-orange { background: #fff7ed; color: #ea580c; }
+    .icon-red { background: #fef2f2; color: #dc2626; }
+
+    .card-number {
+      font-size: 29px;
+      font-weight: 800;
+      margin-top: 14px;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 6px;
+    }
+
+    .up {
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    /* Box */
+    .box {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(15, 23, 42, 0.035);
+    }
+
+    .box-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .box-header h2 {
+      font-size: 17px;
+    }
+
+    .box-header p {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .box-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 38px;
+      padding: 0 14px;
+      border-radius: 9px;
+      background: var(--primary);
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      transition: 0.2s ease;
+    }
+
+    .btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: #334155;
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    .btn-green {
+      background: var(--green);
+    }
+
+    .btn-green:hover {
+      background: #059669;
+    }
+
+    .btn-danger {
+      background: var(--red);
+    }
+
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+
+    .btn-small {
+      min-height: 31px;
+      padding: 0 10px;
+      font-size: 11px;
+    }
+
+    /* Traffic grid */
+    .traffic-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 18px;
+    }
+
+    .road-item {
+      border: 1px solid var(--border);
+      padding: 17px;
+      border-radius: 11px;
+      margin-bottom: 10px;
+      transition: 0.2s ease;
+    }
+
+    .road-item:hover {
+      border-color: #bfdbfe;
+      background: #fafcff;
+    }
+
+    .road-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .road-name {
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .road-location {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .progress-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .progress {
+      height: 8px;
+      flex: 1;
+      background: #e2e8f0;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      border-radius: 20px;
+      transition: width 0.5s ease;
+    }
+
+    .progress-green { background: linear-gradient(90deg, #10b981, #34d399); }
+    .progress-orange { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+    .progress-red { background: linear-gradient(90deg, #ef4444, #f87171); }
+
+    .progress-value {
+      width: 35px;
+      text-align: right;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .status-summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .summary-box {
+      padding: 15px;
+      border-radius: 11px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+
+    .summary-box strong {
+      display: block;
+      font-size: 21px;
+    }
+
+    .summary-box span {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      margin-top: 4px;
+    }
+
+    .summary-green { background: #f0fdf4; }
+    .summary-orange { background: #fffbeb; }
+    .summary-red { background: #fef2f2; }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 9px;
+      border-radius: 30px;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .status::before {
+      content: "";
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .low { background: var(--green-soft); color: #15803d; }
+    .moderate { background: var(--yellow-soft); color: #a16207; }
+    .heavy, .active-status { background: var(--red-soft); color: #b91c1c; }
+    .resolved { background: var(--green-soft); color: #15803d; }
+
+    /* Flow */
+    .flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .flow-item {
+      min-width: 125px;
+      padding: 15px;
+      border-radius: 11px;
+      background: var(--primary-soft);
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .arrow {
+      color: #94a3b8;
+      font-size: 18px;
+    }
+
+    /* Tables */
+    .table-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .search-box {
+      position: relative;
+      width: 280px;
+      max-width: 100%;
+    }
+
+    .search-box input {
+      width: 100%;
+      height: 38px;
+      padding: 0 13px 0 36px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      outline: none;
+      font-size: 12px;
+    }
+
+    .search-box input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    th, td {
+      padding: 12px 10px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #f8fafc;
+      color: var(--text);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    tbody tr:hover {
+      background: #fafcff;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px 10px;
+      font-size: 10px;
+      font-weight: 700;
+      border-radius: 20px;
+      background: #eef2ff;
+      color: #4338ca;
+    }
+
+    .badge.success { background: #ecfdf5; color: #047857; }
+    .badge.warning { background: #fff7ed; color: #c2410c; }
+    .badge.danger { background: #fef2f2; color: #b91c1c; }
+
+    .action-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Forms */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      min-height: 42px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      outline: none;
+      background: #fff;
+      transition: 0.2s ease;
+    }
+
+    .form-group textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    /* Analytics */
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .chart-box {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    .chart-box h3 {
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    .mini-bars {
+      display: flex;
+      align-items: end;
+      gap: 10px;
+      height: 150px;
+      padding-top: 20px;
+    }
+
+    .mini-bar-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      height: 100%;
+      justify-content: flex-end;
+    }
+
+    .mini-bar {
+      width: 100%;
+      max-width: 38px;
+      border-radius: 10px 10px 0 0;
+      background: linear-gradient(180deg, #77a8ff, #2563eb);
+    }
+
+    .mini-bar-label {
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .donut {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: conic-gradient(#2563eb 0 55%, #10b981 55% 80%, #f59e0b 80% 100%);
+      margin: 0 auto 12px;
+      position: relative;
+    }
+
+    .donut::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      background: white;
+      border-radius: 50%;
+    }
+
+    .legend {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .dot-blue { background: #2563eb; }
+    .dot-green { background: #10b981; }
+    .dot-yellow { background: #f59e0b; }
+
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .traffic-grid,
+      .analytics-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .sidebar {
+        position: fixed;
+        left: -100%;
+        transition: left 0.2s ease;
+      }
+
+      .sidebar.open {
+        left: 0;
+      }
+
+      .main {
+        margin-left: 0;
+      }
+
+      .mobile-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .header {
+        padding: 0 18px;
+      }
+
+      .content {
+        padding: 18px;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .cards,
+      .form-grid,
+      .status-summary {
+        grid-template-columns: 1fr;
+      }
+
+      .header {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 12px 18px;
+      }
+
+      .header-right {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .table-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .search-box {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="loginPage">
+    <div class="login-container">
+      <div class="login-logo">
+        <div class="login-icon">🚦</div>
+        <h1>Smart Traffic</h1>
+        <p>Management System</p>
+      </div>
+
+      <form id="loginForm">
+        <div class="login-group">
+          <label for="username">Username</label>
+          <div class="input-wrapper">
+            <input id="username" type="text" placeholder="Enter username" required />
+          </div>
+        </div>
+
+        <div class="login-group">
+          <label for="password">Password</label>
+          <div class="input-wrapper">
+            <input id="password" type="password" placeholder="Enter password" required />
+            <button type="button" class="password-toggle" id="togglePassword">👁</button>
+          </div>
+        </div>
+
+        <button class="login-btn" type="submit">LOGIN</button>
+        <div class="login-demo">Demo: use any username and password to access the dashboard.</div>
+      </form>
+    </div>
+  </div>
+
+  <div id="app" class="hidden">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-icon">🚦</div>
+        <div>
+          <h2>Smart Traffic</h2>
+          <p>Control Center</p>
+        </div>
+      </div>
+
+      <div class="menu-title">Navigation</div>
+      <nav class="menu">
+        <button class="active" data-page="dashboard"><span class="menu-icon">🏠</span> Dashboard</button>
+        <button data-page="traffic"><span class="menu-icon">🚗</span> Traffic Flow</button>
+        <button data-page="incidents"><span class="menu-icon">⚠️</span> Incidents</button>
+        <button data-page="vehicles"><span class="menu-icon">🚙</span> Vehicles</button>
+        <button data-page="analytics"><span class="menu-icon">📊</span> Analytics</button>
+        <button data-page="settings"><span class="menu-icon">⚙️</span> Settings</button>
+      </nav>
+
+      <div class="sidebar-footer">
+        SYSTEM v2.4<br />Live monitoring active
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="header">
+        <div class="header-left">
+          <button class="mobile-button" id="mobileToggle">☰</button>
+          <div class="header-title">
+            <h1>Traffic Operations</h1>
+            <p>Citywide management overview</p>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <div class="clock" id="clock">--:--:--</div>
+          <div class="profile">
+            <div class="profile-icon">A</div>
+            <div class="profile-text">
+              <strong id="currentUser">Admin</strong>
+              <p>Operations Lead</p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="content">
+        <section id="dashboard" class="page active">
+          <div class="cards">
+            <div class="card">
+              <div class="card-top">
+                <div class="card-title">Total Vehicles</div>
+                <div class="card-icon icon-blue">🚗</div>
+              </div>
+              <div class="card-number">18,432</div>
+              <div class="card-meta"><span class="up">▲ 8.4%</span> vs last week</div>
+            </div>
+
+            <div class="card">
+              <div class="card-top">
+                <div class="card-title">Active Signals</div>
+                <div class="card-icon icon-green">🚦</div>
+              </div>
+              <div class="card-number">126</div>
+              <div class="card-meta"><span class="up">▲ 3.1%</span> optimized</div>
+            </div>
+
+            <div class="card">
+              <div class="card-top">
+                <div class="card-title">Incidents</div>
+                <div class="card-icon icon-orange">⚠️</div>
+              </div>
+              <div class="card-number">24</div>
+              <div class="card-meta"><span class="up">▼ 12%</span> reduced</div>
+            </div>
+
+            <div class="card">
+              <div class="card-top">
+                <div class="card-title">Avg. Delay</div>
+                <div class="card-icon icon-red">⏱️</div>
+              </div>
+              <div class="card-number">4.8m</div>
+              <div class="card-meta"><span class="up">▼ 1.2m</span> this month</div>
+            </div>
+          </div>
+
+          <div class="box">
+            <div class="box-header">
+              <div>
+                <h2>Traffic Monitoring</h2>
+                <p>Live city road condition overview</p>
+              </div>
+              <div class="box-actions">
+                <button class="btn btn-secondary btn-small">Refresh Data</button>
+              </div>
+            </div>
+
+            <div class="traffic-grid">
+              <div>
+                <div class="road-item">
+                  <div class="road-info">
+                    <div>
+                      <div class="road-name">Main Avenue</div>
+                      <div class="road-location">Downtown Loop</div>
+                    </div>
+                    <span class="status moderate">Moderate</span>
+                  </div>
+                  <div class="progress-row">
+                    <div class="progress"><div class="progress-bar progress-orange" style="width: 68%"></div></div>
+                    <div class="progress-value">68%</div>
+                  </div>
+                </div>
+
+                <div class="road-item">
+                  <div class="road-info">
+                    <div>
+                      <div class="road-name">Harbor Road</div>
+                      <div class="road-location">North Corridor</div>
+                    </div>
+                    <span class="status low">Low</span>
+                  </div>
+                  <div class="progress-row">
+                    <div class="progress"><div class="progress-bar progress-green" style="width: 42%"></div></div>
+                    <div class="progress-value">42%</div>
+                  </div>
+                </div>
+
+                <div class="road-item">
+                  <div class="road-info">
+                    <div>
+                      <div class="road-name">Central Bridge</div>
+                      <div class="road-location">East District</div>
+                    </div>
+                    <span class="status heavy">Heavy</span>
+                  </div>
+                  <div class="progress-row">
+                    <div class="progress"><div class="progress-bar progress-red" style="width: 89%"></div></div>
+                    <div class="progress-value">89%</div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="status-summary">
+                  <div class="summary-box summary-green">
+                    <strong>82%</strong>
+                    <span>Flow Efficiency</span>
+                  </div>
+                  <div class="summary-box summary-orange">
+                    <strong>34</strong>
+                    <span>Congested Spots</span>
+                  </div>
+                  <div class="summary-box summary-red">
+                    <strong>7</strong>
+                    <span>Critical Alerts</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="box">
+            <div class="box-header">
+              <div>
+                <h2>System Flow</h2>
+                <p>Operational pipeline</p>
+              </div>
+            </div>
+
+            <div class="flow">
+              <div class="flow-item">Sensors</div>
+              <div class="arrow">→</div>
+              <div class="flow-item">Data Layer</div>
+              <div class="arrow">→</div>
+              <div class="flow-item">AI Routing</div>
+              <div class="arrow">→</div>
+              <div class="flow-item">Signal Control</div>
+            </div>
+          </div>
+        </section>
+
+        <section id="traffic" class="page">
+          <div class="box">
+            <div class="box-header">
+              <div>
+                <h2>Traffic Flow Overview</h2>
+                <p>Monitor signal timing and road throughput</p>
+              </div>
+              <div class="box-actions">
+                <button class="btn btn-small">Auto Optimize</button>
+              </div>
+            </div>
+
+            <div class="table-toolbar">
+              <div class="search-box">
+                <span class="search-icon">🔎</span>
+                <input type="text" id="trafficSearch" placeholder="Search road or corridor..." />
+              </div>
+            </div>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>Road</th>
+                  <th>Corridor</th>
+                  <th>Flow</th>
+                  <th>Signal Timing</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="trafficTableBody">
+                <tr>
+                  <td>Main Avenue</td>
+                  <td>Downtown</td>
+                  <td>68%</td>
+                  <td>46 sec</td>
+                  <td><span class="status moderate">Moderate</span></td>
+                </tr>
+                <tr>
+                  <td>Harbor Road</td>
+                  <td>North</td>
+                  <td>42%</td>
+                  <td>32 sec</td>
+                  <td><span class="status low">Low</span></td>
+                </tr>
+                <tr>
+                  <td>Central Bridge</td>
+                  <td>East</td>
+                  <td>89%</td>
+                  <td>58 sec</td>
+                  <td><span class="status heavy">Heavy</span></td>
+                </tr>
+                <tr>
+                  <td>Riverside Blvd</td>
+                  <td>West</td>
+                  <td>54%</td>
+                  <td>36 sec</td>
+                  <td><span class="status moderate">Moderate</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="incidents" class="page">
+          <div class="box">
+            <div class="box-header">
+              <div>
+                <h2>Traffic Incidents</h2>
+                <p>Active events and incident tracking</p>
+              </div>
+              <button class="btn btn-green">+ New Incident</button>
+            </div>
+
+            <div class="table-toolbar">
+              <div class="search-box">
+                <span class="search-icon">🔎</span>
+                <input type="text" id="incidentSearch" placeholder="Search incident or location..." />
+              </div>
+            </div>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Location</th>
+                  <th>Type</th>
+                  <th>Severity</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="incidentTableBody">
+                <tr>
+                  <td>#TR-102</td>
+                  <td>Central Bridge</td>
+                  <td>Vehicle Breakdown</td>
+                  <td><span class="badge warning">High</span></td>
+                  <td><span class="status active-status">Active</span></td>
+                </tr>
+                <tr>
+                  <td>#TR-118</td>
+                  <td>Main Avenue</td>
+                  <td>Signal Fault</td>
+                  <td><span class="badge danger">Critical</span></td>
+                  <td><span class="status resolved">Resolved</span></td>
+                </tr>
+                <tr>
+                  <td>#TR-121</td>
+                  <td>Harbor Road</td>
+                  <td>Roadwork</td>
+                  <td><span class="badge success">Medium</span></td>
+                  <td><span class="status moderate">Monitoring</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="vehicles" class="page">
+          <div class="box">
+            <div class="box-header">
+              <div>
+                <h2>Vehicle Registry</h2>
+                <p>Monitor active vehicles and travel patterns</p>
+              </div>
+              <button class="btn">Export</button>
+            </div>
+
+            <div class="table-toolbar">
+              <div class="search-box">
+                <span class="search-icon">🔎</span>
+                <input type="text" id="vehicleSearch" placeholder="Search plate or driver..." />
+              </div>
+            </div>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>Plate</th>
+                  <th>Driver</th>
+                  <th>Route</th>
+                  <th>Speed</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="vehicleTableBody">
+                <tr>
+                  <td>ABC-412</td>
+                  <td>M. Lopez</td>
+                  <td>North Loop</td>
+                  <td>58 km/h</td>
+                  <td><span class="badge success">Normal</span></td>
+                </tr>
+                <tr>
+                  <td>CGT-770</td>
+                  <td>J. Park</td>
+                  <td>Downtown</td>
+                  <td>31 km/h</td>
+                  <td><span class="badge warning">Slow</span></td>
+                </tr>
+                <tr>
+                  <td>RPL-183</td>
+                  <td>E. Diaz</td>
+                  <td>Harbor</td>
+                  <td>74 km/h</td>
+                  <td><span class="badge success">Normal</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="analytics" class="page">
+          <div class="analytics-grid">
+            <div class="chart-box">
+              <h3>Hourly Traffic</h3>
+              <div class="mini-bars">
+                <div class="mini-bar-wrap">
+                  <div class="mini-bar" style="height: 35%"></div>
+                  <div class="mini-bar-label">6A</div>
+                </div>
+                <div class="mini-bar-wrap">
+                  <div class="mini-bar" style="height: 55%"></div>
+                  <div class="mini-bar-label">8A</div>
+                </div>
+                <div class="mini-bar-wrap">
+                  <div class="mini-bar" style="height: 72%"></div>
+                  <div class="mini-bar-label">10A</div>
+                </div>
+                <div class="mini-bar-wrap">
+                  <div class="mini-bar" style="height: 88%"></div>
+                  <div class="mini-bar-label">12P</div>
+                </div>
+                <div class="mini-bar-wrap">
+                  <div class="mini-bar" style="height: 68%"></div>
+                  <div class="mini-bar-label">2P</div>
+                </div>
+                <div class="mini-bar-wrap">
+                  <div class="mini-bar" style="height: 46%"></div>
+                  <div class="mini-bar-label">4P</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="chart-box">
+              <h3>Mode Distribution</h3>
+              <div class="donut"></div>
+              <div class="legend">
+                <div class="legend-item"><span class="dot dot-blue"></span> Private Vehicles 55%</div>
+                <div class="legend-item"><span class="dot dot-green"></span> Public Transit 25%</div>
+                <div class="legend-item"><span class="dot dot-yellow"></span> Freight 20%</div>
+              </div>
+            </div>
+
+            <div class="chart-box">
+              <h3>Performance Summary</h3>
+              <div class="status-summary" style="grid-template-columns: 1fr; margin-top: 10px;">
+                <div class="summary-box summary-green">
+                  <strong>4.8m</strong>
+                  <span>Average Delay</span>
+                </div>
+                <div class="summary-box summary-orange">
+                  <strong>78%</strong>
+                  <span>Signal Compliance</span>
+                </div>
+                <div class="summary-box summary-red">
+                  <strong>12</strong>
+                  <span>Priority Alerts</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="settings" class="page">
+          <div class="box">
+            <div class="box-header">
+              <div>
+                <h2>System Settings</h2>
+                <p>Configure city-wide traffic automation</p>
+              </div>
+            </div>
+
+            <form class="form-grid">
+              <div class="form-group">
+                <label>Signal Cycle Time</label>
+                <input type="number" value="42" />
+              </div>
+
+              <div class="form-group">
+                <label>Intersection Sensitivity</label>
+                <select>
+                  <option>Balanced</option>
+                  <option>High Priority</option>
+                  <option>Adaptive</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Emergency Override</label>
+                <select>
+                  <option>Enabled</option>
+                  <option>Manual</option>
+                  <option>Disabled</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Notification Channel</label>
+                <select>
+                  <option>SMS + Email</option>
+                  <option>Email Only</option>
+                  <option>SMS Only</option>
+                </select>
+              </div>
+
+              <div class="form-group full">
+                <button type="button" class="btn btn-green">Save Settings</button>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const loginPage = document.getElementById('loginPage');
+    const app = document.getElementById('app');
+    const loginForm = document.getElementById('loginForm');
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+    const currentUser = document.getElementById('currentUser');
+    const mobileToggle = document.getElementById('mobileToggle');
+    const sidebar = document.getElementById('sidebar');
+
+    loginForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = passwordInput.value.trim();
+
+      if (username && password) {
+        currentUser.textContent = username || 'Admin';
+        loginPage.classList.add('hidden');
+        app.classList.remove('hidden');
+      }
+    });
+
+    togglePassword.addEventListener('click', function () {
+      const isPassword = passwordInput.type === 'password';
+      passwordInput.type = isPassword ? 'text' : 'password';
+      togglePassword.textContent = isPassword ? '🙈' : '👁';
+    });
+
+    function updateClock() {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      document.getElementById('clock').textContent = timeString;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    document.querySelectorAll('.menu button').forEach((button) => {
+      button.addEventListener('click', function () {
+        document.querySelectorAll('.menu button').forEach((btn) => btn.classList.remove('active'));
+        this.classList.add('active');
+
+        const pageId = this.dataset.page;
+        document.querySelectorAll('.page').forEach((page) => page.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+
+        if (window.innerWidth <= 820) {
+          sidebar.classList.remove('open');
+        }
+      });
+    });
+
+    mobileToggle.addEventListener('click', function () {
+      sidebar.classList.toggle('open');
+    });
+
+    function filterTable(inputId, tableBodyId) {
+      const input = document.getElementById(inputId);
+      const tbody = document.getElementById(tableBodyId);
+      input.addEventListener('input', function () {
+        const filter = this.value.toLowerCase();
+        const rows = tbody.querySelectorAll('tr');
+
+        rows.forEach((row) => {
+          const text = row.textContent.toLowerCase();
+          row.style.display = text.includes(filter) ? '' : 'none';
+        });
+      });
+    }
+
+    filterTable('trafficSearch', 'trafficTableBody');
+    filterTable('incidentSearch', 'incidentTableBody');
+    filterTable('vehicleSearch', 'vehicleTableBody');
+  </script>
+</body>
+</html>
